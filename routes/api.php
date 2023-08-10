@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -54,6 +55,9 @@ Route::post('/save-role-permissions', [RolePermissionController::class,'store'])
 
 Route::delete('/roles-permissions/{roleId}/{permissionId}', [RolePermissionController::class, 'destroy']);
 
+//Teacher
 
+Route::post('/admin/teacher/store', [TeacherController::class, 'store']);
+Route::get('/admin/teachers',[TeacherController::class,'index']);
 
 
