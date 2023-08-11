@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -61,3 +62,7 @@ Route::post('/admin/teacher/store', [TeacherController::class, 'store']);
 Route::get('/admin/teachers',[TeacherController::class,'index']);
 
 
+//Course
+
+Route::post('/admin/course/store', [CourseController::class, 'store']);
+Route::get('/admin/courses',[CourseController::class,'index']);
