@@ -20,7 +20,7 @@ class Teacher extends Model
     ];
 
     public function designations()
-{
-    return $this->belongsToMany(Designation::class);
-}
+    {
+        return $this->belongsToMany(Designation::class);
+    }
 }
