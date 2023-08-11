@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Teacher;
 use Illuminate\Support\Facades\Validator;
 
-class TeacherController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $teacher = Teacher::all();
-        return response()->json(['teacher' => $teacher], 201);
-
+        $department = Department::all();
+        return response()->json(['department' => $department], 201);
     }
 
     /**
@@ -34,28 +33,18 @@ class TeacherController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'department' => 'required',
-            'courses' => 'required',
-            'contact_no' => 'required',
-            'image' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $teacher = Teacher::create([
+        $department = Department::create([
             'name' => $request->name,
-            'email' => $request->email,
-            'department' => $request->department,
-            'courses' => json_encode($request->courses), // Convert array to JSON
-            'contact_no' => $request->contact_no,
-            'image'=>$request->image,
         ]);
         
 
-        return response()->json(['message' => 'Registration successful'], 201);
+        return response()->json(['message' => 'Department added successfully'], 201);
     }
 
     /**

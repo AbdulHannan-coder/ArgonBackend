@@ -19,5 +19,8 @@ class Teacher extends Model
         'image',
     ];
 
-    
+    public function designations()
+{
+    return $this->belongsToMany(Designation::class);
+}
 }

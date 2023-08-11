@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\DesignationController;
 use App\Http\Controllers\Admin\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -66,3 +68,12 @@ Route::get('/admin/teachers',[TeacherController::class,'index']);
 
 Route::post('/admin/course/store', [CourseController::class, 'store']);
 Route::get('/admin/courses',[CourseController::class,'index']);
+
+//Department
+
+Route::post('/admin/department/store', [DepartmentController::class, 'store']);
+Route::get('/admin/departments',[DepartmentController::class,'index']);
+
+//Designation
+
+Route::get('/admin/designations',[DesignationController::class,'index']);

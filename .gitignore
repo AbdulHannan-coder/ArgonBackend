@@ -17,3 +17,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+database/migrations/2023_08_11_133346_create_designations_table.php
