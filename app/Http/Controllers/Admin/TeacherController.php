@@ -35,7 +35,6 @@ class TeacherController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'designation' => 'required',
             'department' => 'required',
             'courses' => 'required',
             'contact_no' => 'required',
@@ -49,7 +48,6 @@ class TeacherController extends Controller
         $teacher = Teacher::create([
             'name' => $request->name,
             'email' => $request->email,
-            'designation' => $request->designation,
             'department' => $request->department,
             'courses' => json_encode($request->courses), // Convert array to JSON
             'contact_no' => $request->contact_no,
