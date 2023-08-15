@@ -82,3 +82,4 @@ Route::delete('/admin/department/delete/{id}', [DepartmentController::class, 'de
 //Designation
 
 Route::get('/admin/designations',[DesignationController::class,'index']);
+Route::delete('/admin/designation/delete/{id}', [DesignationController::class, 'destroy']);

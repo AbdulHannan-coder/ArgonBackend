@@ -60,8 +60,17 @@ class DesignationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $designation = Designation::findOrFail($id);
+
+        if ($designation->teachers->count() > 0) {
+            return response()->json(['message' => 'Cannot delete designation with related teachers'], 400);
+        }
+
+        $designation->delete();
+
+        return response()->json(['message' => 'Designation deleted successfully']);
     }
+
 }
