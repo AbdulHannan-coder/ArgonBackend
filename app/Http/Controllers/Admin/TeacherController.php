@@ -106,7 +106,14 @@ class TeacherController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
-    }
+{
+    $teacher = Teacher::findOrFail($id);
+
+    $teacher->designations()->detach();
+
+    $teacher->delete();
+
+    return response()->json(['message' => 'Teacher deleted successfully']);
+}
+
 }
