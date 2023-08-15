@@ -76,6 +76,7 @@ Route::delete('/admin/course/delete/{id}', [CourseController::class, 'destroy'])
 
 Route::post('/admin/department/store', [DepartmentController::class, 'store']);
 Route::get('/admin/departments',[DepartmentController::class,'index']);
+Route::put('/admin/department/edit/{id}', [DepartmentController::class, 'update']);
 
 //Designation
 
