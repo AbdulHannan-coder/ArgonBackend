@@ -76,8 +76,22 @@ class CourseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'title' => 'string',
+            'code' => 'string',
+            'department' => 'string',
+            'credit_hours' => 'numeric',
+            'semester' => 'string',
+        ]);
+
+        $course->update($validatedData);
+
+        return response()->json(['message' => 'Course information updated successfully']);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
