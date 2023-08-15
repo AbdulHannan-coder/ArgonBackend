@@ -62,18 +62,24 @@ Route::delete('/roles-permissions/{roleId}/{permissionId}', [RolePermissionContr
 
 Route::post('/admin/teacher/store', [TeacherController::class, 'store']);
 Route::get('/admin/teachers',[TeacherController::class,'index']);
-
+Route::put('/admin/teacher/edit/{id}', [TeacherController::class, 'update']);
+Route::delete('/admin/teacher/delete/{id}', [TeacherController::class, 'destroy']);
 
 //Course
 
 Route::post('/admin/course/store', [CourseController::class, 'store']);
 Route::get('/admin/courses',[CourseController::class,'index']);
+Route::put('/admin/course/edit/{id}', [CourseController::class, 'update']);
+Route::delete('/admin/course/delete/{id}', [CourseController::class, 'destroy']);
 
 //Department
 
 Route::post('/admin/department/store', [DepartmentController::class, 'store']);
 Route::get('/admin/departments',[DepartmentController::class,'index']);
+Route::put('/admin/department/edit/{id}', [DepartmentController::class, 'update']);
+Route::delete('/admin/department/delete/{id}', [DepartmentController::class, 'destroy']);
 
 //Designation
 
 Route::get('/admin/designations',[DesignationController::class,'index']);
+Route::delete('/admin/designation/delete/{id}', [DesignationController::class, 'destroy']);

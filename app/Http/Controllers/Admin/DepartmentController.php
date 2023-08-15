@@ -68,7 +68,15 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $department = Department::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'string',
+        ]);
+
+        $department->update($validatedData);
+
+        return response()->json(['message' => 'Department information updated successfully']);
     }
 
     /**
@@ -76,6 +84,11 @@ class DepartmentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $department = Department::findOrFail($id);
+    
+    
+        $department->delete();
+    
+        return response()->json(['message' => 'Department deleted successfully']);
     }
 }
