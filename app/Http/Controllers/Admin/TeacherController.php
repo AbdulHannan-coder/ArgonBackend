@@ -15,8 +15,8 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teacher = Teacher::all();
-        return response()->json(['teacher' => $teacher], 201);
+        $teachers = Teacher::with('designations')->get();
+        return response()->json(['teacher' => $teachers], 201);
 
     }
 
@@ -82,9 +82,24 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $teacher = Teacher::with('designations')->find($id);
+       
+        $teacher->update([
+            'name' => $request->input('name'),
+            'designation' => $request->input('designation'),
+        ]);
+
+        foreach ($teacher->designations as $designation) {
+            $newDesignationId = $request->input('designation_id');
+    
+            $designation->pivot->designation_id = $newDesignationId;
+    
+            $designation->pivot->save();
+        }
+
+        return response()->json(['message' => 'Teacher information updated successfully']);
     }
 
     /**
