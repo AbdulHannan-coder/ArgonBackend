@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
@@ -34,11 +35,12 @@ class TeacherController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:teachers', // Assuming the unique rule should be on the teachers table
             'department' => 'required',
             'courses' => 'required',
             'contact_no' => 'required',
             'image' => 'required',
+            'designation' => 'required', // Make sure this corresponds to the name attribute in the <select> tag
         ]);
 
         if ($validator->fails()) {
@@ -51,9 +53,12 @@ class TeacherController extends Controller
             'department' => $request->department,
             'courses' => json_encode($request->courses), // Convert array to JSON
             'contact_no' => $request->contact_no,
-            'image'=>$request->image,
+            'image' => $request->image,
         ]);
-        
+
+
+        $designationIds = $request->input('designation');
+        $teacher->designations()->attach($designationIds);
 
         return response()->json(['message' => 'Registration successful'], 201);
     }
