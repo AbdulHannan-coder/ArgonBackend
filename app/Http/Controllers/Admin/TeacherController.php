@@ -56,7 +56,7 @@ class TeacherController extends Controller
             'image' => $request->image,
         ]);
 
-        // Assuming 'designation' is the name attribute of the <select> tag
+
         $designationIds = $request->input('designation');
         $teacher->designations()->attach($designationIds);
 
