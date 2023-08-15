@@ -70,6 +70,7 @@ Route::delete('/admin/teacher/delete/{id}', [TeacherController::class, 'destroy'
 Route::post('/admin/course/store', [CourseController::class, 'store']);
 Route::get('/admin/courses',[CourseController::class,'index']);
 Route::put('/admin/course/edit/{id}', [CourseController::class, 'update']);
+Route::delete('/admin/course/delete/{id}', [CourseController::class, 'destroy']);
 
 //Department
 
