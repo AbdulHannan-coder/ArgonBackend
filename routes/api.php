@@ -62,6 +62,7 @@ Route::delete('/roles-permissions/{roleId}/{permissionId}', [RolePermissionContr
 
 Route::post('/admin/teacher/store', [TeacherController::class, 'store']);
 Route::get('/admin/teachers',[TeacherController::class,'index']);
+Route::get('/admin/getTeacher/{id}', [TeacherController::class, 'getTeacher']);
 Route::put('/admin/teacher/edit/{id}', [TeacherController::class, 'update']);
 Route::delete('/admin/teacher/delete/{id}', [TeacherController::class, 'destroy']);
 

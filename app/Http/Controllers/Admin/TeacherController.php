@@ -79,28 +79,42 @@ class TeacherController extends Controller
         //
     }
 
+    public function getTeacher($id)
+    {
+        $teacher = Teacher::find($id);
+        return response()->json($teacher);
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
         $teacher = Teacher::with('designations')->find($id);
-       
-        $teacher->update([
-            'name' => $request->input('name'),
-            'designation' => $request->input('designation'),
-        ]);
 
-        foreach ($teacher->designations as $designation) {
-            $newDesignationId = $request->input('designation_id');
-    
-            $designation->pivot->designation_id = $newDesignationId;
-    
-            $designation->pivot->save();
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 404);
         }
+
+        $data = [];
+
+        if ($request->has('name')) {
+            $data['name'] = $request->input('name');
+        }
+
+        if ($request->has('designation_id')) {
+            $data['designation_id'] = $request->input('designation_id');
+            foreach ($teacher->designations as $designation) {
+                $designation->pivot->designation_id = $data['designation_id'];
+                $designation->pivot->save();
+            }
+        }
+
+        $teacher->update($data);
 
         return response()->json(['message' => 'Teacher information updated successfully']);
     }
+
 
     /**
      * Remove the specified resource from storage.
