@@ -31,21 +31,25 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|unique:departments',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+    
+            $department = Department::create([
+                'name' => $request->name,
+            ]);
+    
+            return response()->json(['message' => 'Department added successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while processing your request'], 500);
         }
-
-        $department = Department::create([
-            'name' => $request->name,
-        ]);
-        
-
-        return response()->json(['message' => 'Department added successfully'], 201);
     }
+    
 
     /**
      * Display the specified resource.
@@ -66,18 +70,23 @@ class DepartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $department = Department::findOrFail($id);
+        try {
+            $department = Department::findOrFail($id);
 
-        $validatedData = $request->validate([
-            'name' => 'string',
-        ]);
+            $validatedData = $request->validate([
+                'name' => 'string',
+            ]);
 
-        $department->update($validatedData);
+            $department->update($validatedData);
 
-        return response()->json(['message' => 'Department information updated successfully']);
+            return response()->json(['message' => 'Department information updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while processing your request'], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -85,7 +94,6 @@ class DepartmentController extends Controller
     public function destroy(string $id)
     {
         $department = Department::findOrFail($id);
-    
     
         $department->delete();
     
