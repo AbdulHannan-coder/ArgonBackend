@@ -15,7 +15,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::with('designations')->get();
+        $teachers = Teacher::with('designations','departments')->get();
         return response()->json(['teacher' => $teachers], 201);
 
     }
@@ -33,34 +33,40 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|email|unique:teachers', // Assuming the unique rule should be on the teachers table
-            'department' => 'required',
+            'email' => 'required|email|unique:teachers',
+            'department' => 'required|array',
+            'designation' => 'required|array',
             'courses' => 'required',
             'contact_no' => 'required',
-            'image' => 'required',// Make sure this corresponds to the name attribute in the <select> tag
+            'image' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $teacher = Teacher::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'department' => $request->department,
-            'courses' => json_encode($request->courses), // Convert array to JSON
-            'contact_no' => $request->contact_no,
-            'image' => $request->image,
-        ]);
+        try {
+            $teacher = Teacher::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'courses' => json_encode($request->courses),
+                'contact_no' => $request->contact_no,
+                'image' => $request->image,
+            ]);
 
+            $teacher->departments()->attach($request->department);
+            $teacher->designations()->attach($request->designation);
 
-        $designationIds = $request->input('designation');
-        $teacher->designations()->attach($designationIds);
-
-        return response()->json(['message' => 'Registration successful'], 201);
+            return response()->json(['message' => 'Registration successful'], 201);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return response()->json(['error' => 'An error occurred while saving data'], 500);
+        }
     }
+
 
     /**
      * Display the specified resource.

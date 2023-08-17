@@ -11,7 +11,6 @@ class Teacher extends Model
 
     protected $fillable = [
         'name',
-        'department',
         'courses',
         'contact_no',
         'email',
@@ -22,4 +21,10 @@ class Teacher extends Model
     {
         return $this->belongsToMany(Designation::class);
     }
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'department_teacher');
+    }
+
 }

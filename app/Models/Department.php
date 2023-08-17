@@ -12,4 +12,10 @@ class Department extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'department_teacher');
+    }
+
 }

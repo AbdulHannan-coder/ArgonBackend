@@ -76,7 +76,7 @@ class DepartmentController extends Controller
             $department = Department::findOrFail($id);
 
             $validatedData = $request->validate([
-                'name' => 'string',
+                'name' => 'required',
             ]);
 
             $department->update($validatedData);
@@ -91,12 +91,17 @@ class DepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $department = Department::findOrFail($id);
-    
-        $department->delete();
-    
-        return response()->json(['message' => 'Department deleted successfully']);
+        try {
+            $department = Department::findOrFail($id);
+            $department->delete();
+            
+            return response()->json(['message' => 'Department deleted successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Department not found'], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred while deleting the department'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
