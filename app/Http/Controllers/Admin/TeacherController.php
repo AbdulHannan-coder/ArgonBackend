@@ -39,8 +39,7 @@ class TeacherController extends Controller
             'department' => 'required',
             'courses' => 'required',
             'contact_no' => 'required',
-            'image' => 'required',
-            'designation' => 'required', // Make sure this corresponds to the name attribute in the <select> tag
+            'image' => 'required',// Make sure this corresponds to the name attribute in the <select> tag
         ]);
 
         if ($validator->fails()) {
@@ -79,55 +78,52 @@ class TeacherController extends Controller
         //
     }
 
-    public function getTeacher($id)
-    {
-        $teacher = Teacher::find($id);
-        return response()->json($teacher);
-    }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $teacher = Teacher::with('designations')->find($id);
-
-        if (!$teacher) {
-            return response()->json(['message' => 'Teacher not found'], 404);
-        }
-
-        $data = [];
-
-        if ($request->has('name')) {
-            $data['name'] = $request->input('name');
-        }
-
-        if ($request->has('designation_id')) {
-            $data['designation_id'] = $request->input('designation_id');
-            foreach ($teacher->designations as $designation) {
-                $designation->pivot->designation_id = $data['designation_id'];
-                $designation->pivot->save();
+        try {
+            $teacher = Teacher::findOrFail($id);
+    
+            $teacher->update([
+                'name' => $request->input('name', $teacher->name),
+                'image' => $request->input('image', $teacher->image),
+                'contact_no' => $request->input('contact_no', $teacher->contact_no),
+                'department' => $request->input('department', $teacher->department),
+            ]);
+    
+            if ($request->has('designation')) {
+                $designationId = $request->input('designation');
+                $teacher->designations()->sync([$designationId]);
             }
+    
+            return response()->json(['message' => 'Teacher updated successfully']);
+        } catch (\Exception $e) {
+            \Log::error('Update Teacher Exception: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to update teacher'], 500);
         }
-
-        $teacher->update($data);
-
-        return response()->json(['message' => 'Teacher information updated successfully']);
-    }
+    }     
+    
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-{
-    $teacher = Teacher::findOrFail($id);
+    public function destroy($id)
+    {
+        try {
+            $teacher = Teacher::findOrFail($id);
 
-    $teacher->designations()->detach();
+            $teacher->designations()->detach();
 
-    $teacher->delete();
+            $teacher->delete();
 
-    return response()->json(['message' => 'Teacher deleted successfully']);
-}
+            return response()->json(['message' => 'Teacher deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete teacher'], 500);
+        }
+    }
+
 
 }
