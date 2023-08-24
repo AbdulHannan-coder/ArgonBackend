@@ -106,7 +106,7 @@ class TeacherController extends Controller
     
             return response()->json(['message' => 'Teacher updated successfully']);
         } catch (\Exception $e) {
-            \Log::error('Update Teacher Exception: ' . $e->getMessage());
+            // \Log::error('Update Teacher Exception: ' . $e->getMessage());
             return response()->json(['message' => 'Failed to update teacher'], 500);
         }
     }     

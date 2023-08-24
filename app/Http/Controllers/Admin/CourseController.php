@@ -87,6 +87,7 @@ class CourseController extends Controller
         ]);
 
         $course->update($validatedData);
+        
 
         return response()->json(['message' => 'Course information updated successfully']);
     }
