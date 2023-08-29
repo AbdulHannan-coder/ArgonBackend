@@ -45,4 +45,11 @@ class RegisterController extends Controller
 
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+    public function logout(Request $request)
+    {
+        $test= $request->user()->tokens()->delete();
+
+        return response()->json(['message' => $test]);
+    }
 }
