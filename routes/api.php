@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [RegisterController::class, 'login']);
 
+Route::middleware(['auth:sanctum'])->group(function () {
+
 //Role
 Route::get('/roles', [RoleController::class, 'index']);
 Route::post('/roles/store', [RoleController::class, 'store']);
@@ -83,3 +85,5 @@ Route::delete('/admin/department/delete/{id}', [DepartmentController::class, 'de
 
 Route::get('/admin/designations',[DesignationController::class,'index']);
 Route::delete('/admin/designation/delete/{id}', [DesignationController::class, 'destroy']);
+
+});
