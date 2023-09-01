@@ -16,4 +16,10 @@ class Course extends Model
         'credit_hours',
         'semester',
     ];
+
+    public function students()
+{
+    return $this->hasMany(Student::class);
+}
+
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,8 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [RegisterController::class, 'login']);
 Route::post('/logout', [RegisterController::class, 'logout'])->middleware('auth:sanctum');
-Route::middleware(['auth:sanctum'])->group(function () {
 
+Route::middleware(['auth:sanctum'])->group(function () {
 //Role
 Route::get('/roles', [RoleController::class, 'index']);
 Route::post('/roles/store', [RoleController::class, 'store']);
@@ -85,5 +86,12 @@ Route::delete('/admin/department/delete/{id}', [DepartmentController::class, 'de
 
 Route::get('/admin/designations',[DesignationController::class,'index']);
 Route::delete('/admin/designation/delete/{id}', [DesignationController::class, 'destroy']);
+
+
+//Student
+Route::post('/admin/student/store', [StudentController::class, 'store']);
+Route::get('/admin/students',[StudentController::class,'index']);
+Route::put('/admin/student/edit/{id}', [StudentController::class, 'update']);
+Route::delete('/admin/student/delete/{id}', [StudentController::class, 'destroy']);
 
 });
